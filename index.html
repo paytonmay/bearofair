@@ -181,17 +181,10 @@
       #locateBtn {
         bottom: 76px;
       }
-      .touch-btn {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        z-index: 400;
-        background: #1f2937;
-        border: 1px solid #374151;
-        color: #e5e7eb;
-        padding: 8px 10px;
-        border-radius: 8px;
-        display: none;
+      .touch-btn,
+      #openDetailsTop,
+      #closeDetails {
+        display: none !important;
       }
 
       footer {
@@ -222,27 +215,16 @@
         font-size: 14px;
       }
 
-      /* Mobile mode toggled via .mode-mobile on <body> */
-      body.mode-mobile .wrap {
-        grid-template-columns: 1fr;
-      }
-      body.mode-mobile aside {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        width: 100%;
-        max-width: 100%;
-        transform: translateX(100%);
-        border-left: none;
-        border-top: 1px solid #1f2937;
-        z-index: 500;
-      }
-      body.mode-mobile aside.open {
-        transform: translateX(0);
-      }
-      body.mode-mobile .touch-btn {
-        display: block;
+      @media (max-width: 768px) {
+        .wrap {
+          grid-template-columns: 1fr;
+          grid-template-rows: 1fr auto;
+          overflow: auto;
+        }
+        aside {
+          border-left: none;
+          border-top: 1px solid #1f2937;
+        }
       }
     </style>
   </head>
@@ -654,7 +636,6 @@
       const vAbout = document.getElementById("vAbout");
       const vCoords = document.getElementById("vCoords");
       const vImage = document.getElementById("vImage");
-      const closeBtn = document.getElementById("closeDetails");
 
       function showDetails(b) {
         vName.textContent = b.name || "—";
@@ -678,7 +659,6 @@
           map.setView(m.getLatLng(), Math.max(map.getZoom(), 16));
           m.openPopup();
         }
-        if (document.body.classList.contains("mode-mobile")) openPanel();
       }
 
       // ===== List + Search =====
@@ -745,37 +725,6 @@
       document
         .getElementById("locateTop")
         .addEventListener("click", locateUser);
-
-      // ===== Mode switching (desktop vs mobile) =====
-      const openBtn = document.getElementById("openDetails");
-      const openTop = document.getElementById("openDetailsTop");
-      function isMobile() {
-        return window.innerWidth <= 768;
-      }
-      function applyMode() {
-        const mobile = isMobile();
-        document.body.classList.toggle("mode-mobile", mobile);
-        if (!mobile) {
-          panel.classList.remove("open");
-          closeBtn.style.display = "none";
-        }
-        invalidate();
-      }
-      function openPanel() {
-        panel.classList.add("open");
-        closeBtn.style.display = "inline-block";
-        invalidate();
-      }
-      function closePanel() {
-        panel.classList.remove("open");
-        closeBtn.style.display = "none";
-        invalidate();
-      }
-      window.addEventListener("resize", applyMode);
-      openBtn.addEventListener("click", openPanel);
-      openTop.addEventListener("click", openPanel);
-      closeBtn.addEventListener("click", closePanel);
-      applyMode();
 
       // ===== Init render =====
       renderMarkers(bears);
