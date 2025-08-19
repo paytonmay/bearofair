@@ -241,7 +241,6 @@
       <div class="wrap">
         <div id="map"></div>
         <button class="touch-btn" id="openDetails">Details</button>
-        <button class="map-btn" id="locateBtn">Locate Me</button>
         <aside id="panel">
           <button
             class="btn"
@@ -719,9 +718,6 @@
           (err) => alert("Location error: " + err.message)
         );
       }
-      document
-        .getElementById("locateBtn")
-        .addEventListener("click", locateUser);
       document
         .getElementById("locateTop")
         .addEventListener("click", locateUser);
