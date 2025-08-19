@@ -217,11 +217,34 @@
 
       @media (max-width: 768px) {
         .wrap {
-          grid-template-columns: 1fr;
-          grid-template-rows: 1fr auto;
+          display: flex;
+          flex-direction: column;
           overflow: auto;
         }
+        #map {
+          order: 1;
+          flex: 1;
+          min-height: 40vh;
+        }
+        .drawer {
+          order: 2;
+          position: static;
+          bottom: auto;
+          left: auto;
+          background: var(--panel);
+          padding: 14px;
+          border-top: 1px solid #1f2937;
+        }
+        .drawer .card {
+          background: none;
+          backdrop-filter: none;
+          border: none;
+          border-radius: 0;
+          padding: 0;
+          width: 100%;
+        }
         aside {
+          order: 3;
           border-left: none;
           border-top: 1px solid #1f2937;
         }
