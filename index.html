@@ -145,6 +145,7 @@
         overflow: auto;
         display: grid;
         gap: 6px;
+        transition: max-height 0.3s ease-out;
       }
       .item {
         display: flex;
@@ -224,7 +225,23 @@
         #map {
           order: 1;
           flex: 1;
-          min-height: 40vh;
+          min-height: 30vh;
+        }
+        header h1 {
+          font-size: 16px;
+        }
+        footer {
+          flex-direction: column;
+          align-items: center;
+        }
+        #listToggle {
+          cursor: pointer;
+          user-select: none;
+        }
+        #bearList.collapsed {
+          max-height: 0;
+          overflow: hidden;
+          margin-top: -6px; /* to hide the gap */
         }
         .drawer {
           order: 2;
@@ -295,7 +312,7 @@
         </aside>
         <div class="drawer">
           <div class="card">
-            <h3>All Bears <span class="small" id="listCount"></span></h3>
+            <h3 id="listToggle">All Bears <span class="small" id="listCount"></span><span id="listCaret" style="float:right">▼</span></h3>
             <input
               id="searchInput"
               class="search"
@@ -660,6 +677,7 @@
       const vImage = document.getElementById("vImage");
 
       function showDetails(b) {
+        collapseList();
         vName.textContent = b.name || "—";
         vArtist.textContent = b.artist || "—";
         vAbout.textContent = b.about || "—";
@@ -723,6 +741,31 @@
         (el) =>
           el && el.addEventListener("input", (e) => setQuery(e.target.value))
       );
+
+      // ===== Collapsible List =====
+      const listToggle = document.getElementById('listToggle');
+      const listCaret = document.getElementById('listCaret');
+      const bearListEl = document.getElementById('bearList');
+
+      function collapseList() {
+        bearListEl.classList.add('collapsed');
+        if (listCaret) listCaret.textContent = '►';
+      }
+
+      function expandList() {
+        bearListEl.classList.remove('collapsed');
+        if (listCaret) listCaret.textContent = '▼';
+      }
+
+      if (listToggle) {
+        listToggle.addEventListener('click', () => {
+          if (bearListEl.classList.contains('collapsed')) {
+            expandList();
+          } else {
+            collapseList();
+          }
+        });
+      }
 
       // ===== Locate Me =====
       function locateUser() {
